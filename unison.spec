@@ -53,7 +53,6 @@ Icon=%{name}
 Terminal=false
 Type=Application
 Categories=GTK;X-MandrivaLinux-Internet-FileTransfer;Network;FileTransfer;P2P;
-Encoding=UTF-8
 EOF
 
 %clean
