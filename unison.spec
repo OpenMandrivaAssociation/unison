@@ -11,6 +11,7 @@ Group:		File tools
 Requires:	openssh-clients x11-font-schumacher-misc rsync
 BuildRequires:	ocaml-lablgtk2-devel gtk+2-devel glib2-devel pango-devel emacs-bin
 Source0:	http://www.cis.upenn.edu/~bcpierce/unison/download/release/%name-%version/%name-%version.tar.bz2
+Source1:        unison.png
 URL:		http://www.cis.upenn.edu/~bcpierce/unison/
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
@@ -37,11 +38,13 @@ example.
 %setup -q
 
 %build
-make THREADS=true
+make THREADS=true UISTYLE=gtk2
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -m755 %{name} -D $RPM_BUILD_ROOT%{_bindir}/%{name}
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/pixmaps
+cp -f %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/pixmaps
 
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
 cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-%{name}.desktop << EOF
@@ -52,7 +55,7 @@ Exec=%{_bindir}/%{name}
 Icon=%{name}
 Terminal=false
 Type=Application
-Categories=GTK;X-MandrivaLinux-Internet-FileTransfer;Network;FileTransfer;P2P;
+Categories=GTK;Network;FileTransfer;P2P;
 EOF
 
 %clean
@@ -63,5 +66,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc NEWS TODO.txt README CONTRIB
 %{_bindir}/*
 %{_datadir}/applications/mandriva-%{name}.desktop
+%{_datadir}/pixmaps/*
 
 
