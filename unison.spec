@@ -13,7 +13,6 @@ BuildRequires:	ocaml-lablgtk2-devel gtk+2-devel glib2-devel pango-devel emacs-bi
 Source0:	http://www.cis.upenn.edu/~bcpierce/unison/download/release/%name-%version/%name-%version.tar.bz2
 Source1:        unison.png
 URL:		http://www.cis.upenn.edu/~bcpierce/unison/
-Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 Unison is a file-synchronization tool for Unix and Windows. It allows
