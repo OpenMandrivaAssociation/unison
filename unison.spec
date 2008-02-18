@@ -2,7 +2,7 @@
 %define	version	2.17.1
 %define release	3
 
-Summary:	Unison is a file-synchronization tool for Unix and Windows
+Summary:	File-synchronization tool for Unix and Windows
 Name:		%{name}
 Version:	%{version}
 Release:	%mkrel %{release}
