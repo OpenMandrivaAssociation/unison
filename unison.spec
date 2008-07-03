@@ -1,17 +1,19 @@
 %define	name	unison
-%define	version	2.17.1
-%define release	3
+%define	version	2.27.57
+%define release	1
 
 Summary:	File-synchronization tool for Unix and Windows
 Name:		%{name}
 Version:	%{version}
 Release:	%mkrel %{release}
-License:	GPL
+License:	GPLv2
 Group:		File tools
 Requires:	openssh-clients x11-font-schumacher-misc rsync
 BuildRequires:	ocaml-lablgtk2-devel gtk+2-devel glib2-devel pango-devel emacs-bin
-Source0:	http://www.cis.upenn.edu/~bcpierce/unison/download/release/%name-%version/%name-%version.tar.bz2
+Source0:	http://www.cis.upenn.edu/~bcpierce/unison/download/release/%name-%version/%name-%version.tar.lzma
 Source1:        unison.png
+Source2:	%{name}-%{version}-manual.pdf
+Patch0:		Makefile.OCaml.patch
 URL:		http://www.cis.upenn.edu/~bcpierce/unison/
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
@@ -36,15 +38,17 @@ example.
 
 %prep
 %setup -q
+%patch0 -p0
 
 %build
 make THREADS=true UISTYLE=gtk2
 
 %install
-rm -rf $RPM_BUILD_ROOT
+%__rm -rf $RPM_BUILD_ROOT
 install -m755 %{name} -D $RPM_BUILD_ROOT%{_bindir}/%{name}
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/pixmaps
 cp -f %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/pixmaps
+cp -f %{SOURCE2} .
 
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
 cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-%{name}.desktop << EOF
@@ -59,11 +63,11 @@ Categories=GTK;Network;FileTransfer;P2P;
 EOF
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+%__rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc NEWS TODO.txt README CONTRIB
+%doc NEWS TODO.txt README CONTRIB COPYING %{name}-%{version}-manual.pdf
 %{_bindir}/*
 %{_datadir}/applications/mandriva-%{name}.desktop
 %{_datadir}/pixmaps/*
