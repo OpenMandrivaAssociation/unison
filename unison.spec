@@ -1,6 +1,6 @@
 %define	name	unison
 %define	version	2.27.57
-%define release	1
+%define release	2
 
 Summary:	File-synchronization tool for Unix and Windows
 Name:		%{name}
