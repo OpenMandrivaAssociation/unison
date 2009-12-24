@@ -1,6 +1,6 @@
 %define	name	unison
-%define	version	2.27.57
-%define release	2
+%define	version	2.32.52
+%define release	1
 
 Summary:	File-synchronization tool for Unix and Windows
 Name:		%{name}
@@ -10,9 +10,9 @@ License:	GPLv2
 Group:		File tools
 Requires:	openssh-clients x11-font-schumacher-misc rsync
 BuildRequires:	ocaml-lablgtk2-devel gtk+2-devel glib2-devel pango-devel emacs-bin
-Source0:	http://www.cis.upenn.edu/~bcpierce/unison/download/release/%name-%version/%name-%version.tar.lzma
+Source0:	http://www.seas.upenn.edu/~bcpierce/unison/download/releases/stable/%{name}-%{version}.tar.gz
 Source1:        unison.png
-Source2:	%{name}-%{version}-manual.pdf
+Source2:	http://www.seas.upenn.edu/~bcpierce/unison/download/releases/stable/%{name}-%{version}-manual.pdf
 Patch0:		Makefile.OCaml.patch
 URL:		http://www.cis.upenn.edu/~bcpierce/unison/
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
@@ -38,7 +38,7 @@ example.
 
 %prep
 %setup -q
-%patch0 -p0
+#patch0 -p0
 
 %build
 make THREADS=true UISTYLE=gtk2
