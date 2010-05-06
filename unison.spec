@@ -1,11 +1,7 @@
-%define	name	unison
-%define	version	2.32.52
-%define release	1
-
 Summary:	File-synchronization tool for Unix and Windows
-Name:		%{name}
-Version:	%{version}
-Release:	%mkrel %{release}
+Name:		unison
+Version:	2.32.52
+Release:	%mkrel 1
 License:	GPLv2
 Group:		File tools
 Requires:	openssh-clients x11-font-schumacher-misc rsync
@@ -44,7 +40,7 @@ example.
 make THREADS=true UISTYLE=gtk2
 
 %install
-%__rm -rf $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
 install -m755 %{name} -D $RPM_BUILD_ROOT%{_bindir}/%{name}
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/pixmaps
 cp -f %{SOURCE1} $RPM_BUILD_ROOT%{_datadir}/pixmaps
@@ -63,7 +59,7 @@ Categories=GTK;Network;FileTransfer;P2P;
 EOF
 
 %clean
-%__rm -rf $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
