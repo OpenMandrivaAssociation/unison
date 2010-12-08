@@ -1,7 +1,7 @@
 Summary:	File-synchronization tool for Unix and Windows
 Name:		unison
 Version:	2.32.52
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPLv2
 Group:		File tools
 Requires:	openssh-clients x11-font-schumacher-misc rsync
