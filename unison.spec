@@ -1,6 +1,6 @@
 Summary:	File-synchronization tool for Unix and Windows
 Name:		unison
-Version:	2.40.61
+Version:	2.40.63
 Release:	%mkrel 1
 License:	GPLv2
 Group:		File tools
@@ -9,7 +9,6 @@ BuildRequires:	ocaml-lablgtk2-devel gtk+2-devel glib2-devel pango-devel emacs-bi
 Source0:	http://www.seas.upenn.edu/~bcpierce/unison/download/releases/stable/%{name}-%{version}.tar.gz
 Source1:        unison.png
 Source2:	http://www.seas.upenn.edu/~bcpierce/unison/download/releases/stable/%{name}-%{version}-manual.pdf
-Patch0:		Makefile-2.40.61-fix.patch
 URL:		http://www.cis.upenn.edu/~bcpierce/unison/
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
@@ -34,7 +33,6 @@ example.
 
 %prep
 %setup -q
-%patch0 -p0
 
 %build
 %make THREADS=true UISTYLE=gtk2 buildexecutable
