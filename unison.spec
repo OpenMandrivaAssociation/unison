@@ -1,16 +1,26 @@
+%define _enable_debug_packages %{nil}
+%define debug_package %{nil}
+
 Summary:	File-synchronization tool for Unix and Windows
 Name:		unison
-Version:	2.40.63
-Release:	%mkrel 1
-License:	GPLv2
+Version:	2.40.102
+Release:	1
+License:	GPLv2+
 Group:		File tools
-Requires:	openssh-clients x11-font-schumacher-misc rsync
-BuildRequires:	ocaml-lablgtk2-devel gtk+2-devel glib2-devel pango-devel emacs-bin
-Source0:	http://www.seas.upenn.edu/~bcpierce/unison/download/releases/stable/%{name}-%{version}.tar.gz
-Source1:        unison.png
-Source2:	http://www.seas.upenn.edu/~bcpierce/unison/download/releases/stable/%{name}-%{version}-manual.pdf
-URL:		http://www.cis.upenn.edu/~bcpierce/unison/
-Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+Url:		http://www.cis.upenn.edu/~bcpierce/unison/
+Source0:	%{name}-%{version}.tar.gz
+Source1:	unison.png
+Source2:	%{name}-%{version}-manual.pdf
+Buildrequires:	ocaml
+BuildRequires:	emacs-common
+BuildRequires:	ocaml-lablgtk2-devel
+BuildRequires:	pkgconfig(glib-2.0)
+BuildRequires:	pkgconfig(gtk+-2.0)
+BuildRequires:	pkgconfig(pango)
+BuildRequires:	pkgconfig(pangocairo)
+Requires:	openssh-clients
+Requires:	x11-font-schumacher-misc
+Requires:	rsync
 
 %description
 Unison is a file-synchronization tool for Unix and Windows. It allows
@@ -31,21 +41,29 @@ and Unix (Linux, Solaris). Moreover, Unison works across platforms,
 allowing you to synchronize a Windows laptop with a Unix server, for
 example.
 
+%files
+%doc NEWS RECENTNEWS TODO.txt README CONTRIB COPYING %{name}-%{version}-manual.pdf
+%{_bindir}/*
+%{_datadir}/applications/%{name}.desktop
+%{_datadir}/pixmaps/*
+
+#----------------------------------------------------------------------------
+
 %prep
 %setup -q
 
 %build
-%make THREADS=true UISTYLE=gtk2 buildexecutable
+make THREADS=true UISTYLE=gtk2
 
 %install
-%__rm -rf %{buildroot}
+mv src/* ./
 install -m755 %{name} -D %{buildroot}%{_bindir}/%{name}
 mkdir -p %{buildroot}%{_datadir}/pixmaps
 cp -f %{SOURCE1} %{buildroot}%{_datadir}/pixmaps
 cp -f %{SOURCE2} .
 
 mkdir -p %{buildroot}%{_datadir}/applications
-cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop << EOF
+cat > %{buildroot}%{_datadir}/applications/%{name}.desktop << EOF
 [Desktop Entry]
 Name=%{name}
 Comment=%{summary}
@@ -53,17 +71,6 @@ Exec=%{_bindir}/%{name}
 Icon=%{name}
 Terminal=false
 Type=Application
-Categories=GTK;Network;FileTransfer;P2P;
+Categories=System;Utility;
 EOF
-
-%clean
-%__rm -rf %{buildroot}
-
-%files
-%defattr(-,root,root)
-%doc NEWS TODO.txt README CONTRIB COPYING %{name}-%{version}-manual.pdf
-%{_bindir}/*
-%{_datadir}/applications/mandriva-%{name}.desktop
-%{_datadir}/pixmaps/*
-
 
