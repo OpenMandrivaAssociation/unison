@@ -1,23 +1,32 @@
 %define _enable_debug_packages %{nil}
 %define debug_package %{nil}
 
+# FIXME: ocaml-lablgtk3-devel has not been packaged yet
+%bcond_with gui
+
+
 Summary:	File-synchronization tool for Unix and Windows
 Name:		unison
-Version:	2.40.102
-Release:	2
+Version:	2.53.2
+Release:	1
 License:	GPLv2+
 Group:		File tools
 Url:		http://www.cis.upenn.edu/~bcpierce/unison/
-Source0:	%{name}-%{version}.tar.gz
-Source1:	unison.png
-Source2:	%{name}-%{version}-manual.pdf
+Source0:	https://github.com/bcpierce00/unison/archive/refs/tags/v%{version}/%{name}-%{version}.tar.gz
+#Source1:	unison.png
+#Source2:	%{name}-%{version}-manual.pdf
 Buildrequires:	ocaml
 BuildRequires:	emacs-common
-BuildRequires:	ocaml-lablgtk2-devel
+BuildRequires:	imagemagick
+BuildRequires:	librsvg
+%if %{with gui}
+BuildRequires:	ocaml-lablgtk3-devel
+%endif
 BuildRequires:	pkgconfig(glib-2.0)
-BuildRequires:	pkgconfig(gtk+-2.0)
+BuildRequires:	pkgconfig(gtk+-3.0)
 BuildRequires:	pkgconfig(pango)
 BuildRequires:	pkgconfig(pangocairo)
+
 Requires:	openssh-clients
 Requires:	x11-font-schumacher-misc
 Requires:	rsync
@@ -42,26 +51,59 @@ allowing you to synchronize a Windows laptop with a Unix server, for
 example.
 
 %files
-%doc NEWS RECENTNEWS TODO.txt README CONTRIB COPYING %{name}-%{version}-manual.pdf
+%license LICENSE
+%doc NEWS.md README.md
+%doc src/CONTRIB src/README src/ROADMAP.txt
+%doc doc/unison-manual.pdf
 %{_bindir}/*
+%if %{with gui}
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/pixmaps/*
+%{_iconsdir}/hicolor/*/apps/%{name}.png
+%{_iconsdir}/hicolor/*/apps/%{name}.svg
+%endif
+%{_mandir}/man1/%{name}.1*
 
 #----------------------------------------------------------------------------
 
 %prep
-%setup -q
+%autosetup -p1
 
 %build
-make THREADS=true UISTYLE=gtk2
+%make_build \
+	STATIC=false \
+	DEBUGGING=true \
+	THREADS=true \
+%if %{with gui}
+	UISTYLE=gtk3 \
+%endif
+	NATIVE=true \
+	%{nil}
+
+# docs
+%make_build docs
 
 %install
-mv src/* ./
-install -m755 %{name} -D %{buildroot}%{_bindir}/%{name}
-mkdir -p %{buildroot}%{_datadir}/pixmaps
-cp -f %{SOURCE1} %{buildroot}%{_datadir}/pixmaps
-cp -f %{SOURCE2} .
+# binary
+install -m755 src/%{name} -D %{buildroot}%{_bindir}/%{name}
 
+# manpage
+install -Dm 0644 man/%{name}.1 -t %{buildroot}%{_mandir}/man1/
+
+%if %{with gui}
+# icons
+install -dm 0755 %{buildroot}%{_iconsdir}/hicolor/scalable/apps/
+install -Dm 0644 icons/U.svg %{buildroot}%{_iconsdir}/hicolor/scalable/apps/%{name}.svg
+for d in 16 32 48 64 72 128 256
+do
+	install -dm 0755 %{buildroot}%{_iconsdir}/hicolor/${d}x${d}/apps/
+	convert -background none -size "${d}x${d}" icons/U.svg \
+			%{buildroot}%{_iconsdir}/hicolor/${d}x${d}/apps/%{name}.png
+done
+install -dm 0755 %{buildroot}%{_datadir}/pixmaps/
+convert -size 32x32 icons/U.svg %{buildroot}%{_datadir}/pixmaps/%{name}.xpm
+
+# .desktop
 mkdir -p %{buildroot}%{_datadir}/applications
 cat > %{buildroot}%{_datadir}/applications/%{name}.desktop << EOF
 [Desktop Entry]
@@ -73,4 +115,5 @@ Terminal=false
 Type=Application
 Categories=System;Utility;
 EOF
+%endif
 
