@@ -1,6 +1,7 @@
 %define _enable_debug_packages %{nil}
 %define debug_package %{nil}
 
+%bcond_with doc
 # FIXME: ocaml-lablgtk3-devel has not been packaged yet
 %bcond_with gui
 
@@ -26,6 +27,9 @@ BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(gtk+-3.0)
 BuildRequires:	pkgconfig(pango)
 BuildRequires:	pkgconfig(pangocairo)
+%if %{with doc}
+BuildRequires:	texlive
+%endif
 
 Requires:	openssh-clients
 Requires:	x11-font-schumacher-misc
@@ -54,7 +58,9 @@ example.
 %license LICENSE
 %doc NEWS.md README.md
 %doc src/CONTRIB src/README src/ROADMAP.txt
+%if %{with doc}
 %doc doc/unison-manual.pdf
+%endif
 %{_bindir}/*
 %if %{with gui}
 %{_datadir}/applications/%{name}.desktop
@@ -81,7 +87,9 @@ example.
 	%{nil}
 
 # docs
+%if %{with doc}
 %make_build docs
+%endif
 
 %install
 # binary
