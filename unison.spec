@@ -8,7 +8,7 @@
 
 Summary:	File-synchronization tool for Unix and Windows
 Name:		unison
-Version:	2.53.2
+Version:	2.53.3
 Release:	1
 License:	GPLv2+
 Group:		File tools
