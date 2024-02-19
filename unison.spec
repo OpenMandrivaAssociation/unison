@@ -8,13 +8,12 @@
 
 Summary:	File-synchronization tool for Unix and Windows
 Name:		unison
-Version:	2.53.3
+Version:	2.53.4
 Release:	1
 License:	GPLv2+
 Group:		File tools
 Url:		http://www.cis.upenn.edu/~bcpierce/unison/
 Source0:	https://github.com/bcpierce00/unison/archive/refs/tags/v%{version}/%{name}-%{version}.tar.gz
-#Source1:	unison.png
 #Source2:	%{name}-%{version}-manual.pdf
 Buildrequires:	ocaml
 BuildRequires:	emacs-common
@@ -57,7 +56,7 @@ example.
 %files
 %license LICENSE
 %doc NEWS.md README.md
-%doc src/CONTRIB src/README src/ROADMAP.txt
+%doc src/README src/ROADMAP.txt
 %if %{with doc}
 %doc doc/unison-manual.pdf
 %endif
