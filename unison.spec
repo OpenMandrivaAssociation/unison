@@ -12,7 +12,7 @@ Version:	2.53.5
 Release:	1
 License:	GPLv2+
 Group:		File tools
-Url:		http://www.cis.upenn.edu/~bcpierce/unison/
+Url:		https://www.cis.upenn.edu/~bcpierce/unison/
 Source0:	https://github.com/bcpierce00/unison/archive/refs/tags/v%{version}/%{name}-%{version}.tar.gz
 #Source2:	%{name}-%{version}-manual.pdf
 Buildrequires:	ocaml
