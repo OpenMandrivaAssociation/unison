@@ -15,6 +15,7 @@ Group:		File tools
 Url:		https://www.cis.upenn.edu/~bcpierce/unison/
 Source0:	https://github.com/bcpierce00/unison/archive/refs/tags/v%{version}/%{name}-%{version}.tar.gz
 #Source2:	%{name}-%{version}-manual.pdf
+BuildRequires:	make
 Buildrequires:	ocaml
 BuildRequires:	emacs-common
 BuildRequires:	imagemagick
